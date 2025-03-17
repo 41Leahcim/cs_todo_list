@@ -1,7 +1,27 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Todo-list</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Todo (@items.Count(todo => !todo.done))</h1>
+<input @bind="newTodo">
+<button @onclick="addItem">Add</button>
+<ul>
+    @foreach(var item in items){
+        <li><input type="checkbox" @bind="@item.done"/> @item.name</li>
+    }
+</ul>
 
-Welcome to your new app.
+@code{
+    class TodoItem(String nameValue){
+        public String name = nameValue;
+        public bool done = false;
+    }
+    private String newTodo = "";
+    private List<TodoItem> items = new List<TodoItem>();
+
+    private void addItem(){
+        items.Add(new TodoItem(newTodo));
+        newTodo = "";
+    }
+}
